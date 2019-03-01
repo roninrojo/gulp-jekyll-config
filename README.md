@@ -2,7 +2,7 @@
 Configuración Gulp para trabajar con Jekyll
 
 ## Jekyll Quickstart
-[https://jekyllrb.com/docs/] (Jekyll Docs)
+[Jekyll Docs](https://jekyllrb.com/docs/)
 
 ## Install Gulp
 `npm install`
