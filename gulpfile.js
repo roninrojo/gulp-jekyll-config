@@ -4,6 +4,7 @@
 
 const gulp = require('gulp');
 const cp = require('child_process');
+const shell = require('gulp-shell')
 const gutil = require('gulp-util');
 
 var browserSync = require('browser-sync').create();
@@ -53,8 +54,18 @@ var messages = {
 
 gulp.task('jekyll-dev', function (done) {
 	browserSync.notify(messages.jekyllDev);
-	return cp.spawn('jekyll', ['build'], {stdio: 'inherit'})
-	.on('close', done);
+	return gulp
+    .src("index.html", { read: false })
+    .pipe(
+		shell([
+		
+			//	Variables de desarrollo:
+			//	http://blog.benoitvallon.com/tips/add-a-development-_config-yml-file-to-your-jekyll-blog/
+			//	http://sandeepbhardwaj.github.io/2015/10/17/jekyll-with-environment-variable-and-multiple-config-files.html	  
+			"bundle exec jekyll build --drafts --config _config.yml,_config.dev.yml"
+	])
+    )
+    .on("error", gutil.log);
 });
 
 // Rebuild Jekyll & reload
@@ -107,8 +118,14 @@ gulp.task('sass', function(){
 
 gulp.task('jekyll-prod', function (done) {
   browserSync.notify(messages.jekyllProd);
-  return cp.spawn('jekyll', ['build'], {stdio: 'inherit'})
-  .on('close', done);
+  return gulp
+    .src("index.html", { read: false })
+    .pipe(
+		shell([
+			"bundle exec jekyll build"
+	])
+    )
+    .on("error", gutil.log);
 });
 
 gulp.task('sass-prod', function () {
